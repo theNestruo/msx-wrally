@@ -77,7 +77,7 @@ SPRS_CLEANALL=\
 	spr\spr_events.pcx.spr
 
 DATAS=\
-	data\tileset.bin \
+	data\tileset.tmx.bin \
 	gfx\charset_cutscene_attractmode.pcx.nam.plet5 \
 	gfx\charset_cutscene_ending.pcx.nam.plet5 \
 	gfx\charset_cutscene_shared.pcx.nam.plet5 \
@@ -108,9 +108,6 @@ DATAS_CLEANALL=\
 
 TOOLS=\
 	$(TMX2MAP).exe
-# $(PCX2MSX).exe \
-# $(PCX2SPR).exe \
-# $(TMX2BIN).exe \
 
 #
 # phony targets
@@ -210,8 +207,8 @@ spr\spr_events.pcx.spr: spr\spr_events.pcx
 # datas
 #
 
-data\tileset.bin: data\tileset.tmx
-	$(TMX2BIN) -8 -q $< $@
+data\tileset.tmx.bin: data\tileset.tmx
+	$(TMX2BIN) -t8 $< $@
 
 data\map%.tmx.bin.plet5: data\map%.tmx.bin
 	$(PACK) $<
@@ -230,14 +227,3 @@ cleantools:
 
 $(TMX2MAP).exe: $(TMX2MAP).c
 	$(CCOMPILER) -Wall -O3 $< -o $@
-
-# $(PCX2MSX).exe: $(PCX2MSX).c tools\readpcx.h tools\readpcx.c tools\bitmap.h tools\bitmap.c tools\args.h tools\args.c tools\writetms.h tools\writetms.c
-#	$(CCOMPILER) -Wall -O3 $(PCX2MSX).c tools\readpcx.c tools\bitmap.c tools\args.c tools\writetms.c -o $@
-
-# $(PCX2SPR).exe: $(PCX2SPR).c tools\readpcx.h tools\readpcx.c tools\bitmap.h tools\bitmap.c tools\args.h tools\args.c tools\writetms.h tools\writetms.c
-#	$(CCOMPILER) -Wall -O3 $(PCX2SPR).c tools\readpcx.c tools\bitmap.c tools\args.c tools\writetms.c -o $@
-
-# $(TMX2BIN).exe: $(TMX2BIN).c
-#	$(CCOMPILER) -Wall -O3 $< -o $@
-
-	

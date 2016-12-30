@@ -388,7 +388,7 @@ TXT_ENDING:
 
 ; Definición gráfica de los tiles (sólo normales)
 TILE_DEFINITION:
-	.incbin	"data/tileset.bin"
+	.incbin	"data/tileset.tmx.bin"
 
 ; Información de los tiles (normal, reflejado)
 TILE_PROPERTIES:
