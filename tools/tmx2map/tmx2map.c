@@ -6,6 +6,7 @@
  * Tiled (c) 2008-2013 Thorbjørn Lindeijer [http://www.mapeditor.org/]
  *
  * Version history:
+ * 02/01/2017  v0.6  Fixed some issues with events
  * 12/11/2013  v0.5  "tileset" tag read
  * 15/04/2013  v0.4  Bugfixing
  * 08/04/2013  v0.3  Special events
@@ -129,7 +130,7 @@ void finish();
 int main(int argc, char **argv) {
 
 	/* debug code
-	printf("tmx2map v0.5.\n");
+	printf("DEBUG: tmx2map v0.6.\n");
 	 */
 
 	/* Parse command line */
@@ -331,7 +332,7 @@ int readTmx(FILE *file) {
 	/* Allocate space for the first object */
 	tmx.objectCount = 1;
 	tmx.objects = (struct stObject*) malloc(sizeof(struct stObject));
-	struct stObject *currentObject = tmx.objects;
+	struct stObject *currentObject;
 	for(;;) {
 		/* Read object properties */
 		char *gid, *x, *y;
@@ -342,6 +343,7 @@ int readTmx(FILE *file) {
 			i = 19;
 			goto out;
 		}
+		currentObject = &(tmx.objects[tmx.objectCount -1]);
 		if ((!(currentObject->gid = atoi(gid)))
 				|| (!(currentObject->x = atoi(x)))
 				|| (!(currentObject->y = atoi(y)))) {
@@ -349,6 +351,11 @@ int readTmx(FILE *file) {
 			i = 20;
 			goto out;
 		}
+		
+		/* debug code
+		printf("DEBUG: read: %d @ %d,%d\n",
+			currentObject->gid, currentObject->x, currentObject->y);
+		 */
 		
 		/* Searches for the next tag "object" */
 		if (!(line = fgets(buffer, bufferSize, file))) {
@@ -372,7 +379,6 @@ int readTmx(FILE *file) {
 			goto out;
 		}
 		tmx.objects = realloc(tmx.objects, tmx.objectCount * sizeof(struct stObject));
-		currentObject++;
 	}
 	
 out:
@@ -426,7 +432,7 @@ int generateMap(FILE *file) {
 		struct stEvent event = eventFrom(&tmx.objects[j]);
 		
 		/* debug code
-		printf("from: %d @ %d,%d to: trigger %d, cp %d, type %d, color %d\n",
+		printf("DEBUG: from: %d @ %d,%d to: trigger %d, cp %d, type %d, color %d\n",
 			tmx.objects[j].gid, tmx.objects[j].x, tmx.objects[j].y,
 			event.triggerType, event.cp, event.type, event.color);
 		 */
@@ -485,10 +491,10 @@ struct stEvent eventFrom(struct stObject *object) {
 	if (gid < 7) {
 		/* Special events */
 		event.color = 0;
-		event.type = 0;
-			  // (gid == 0) ?	event.triggerType | 0x80 /* finish */
-			// : (gid < 4) ?	event.triggerType | 0x40 /* jump */
-			// :		event.triggerType | 0x20; /* skid */
+		event.type =
+			  (gid == 0) ?	event.triggerType | 0x80 /* finish */
+			: (gid < 4) ?	event.triggerType | 0x40 /* jump */
+			:		event.triggerType | 0x20; /* skid */
 			
 	} else {
 		/* Normal events */
