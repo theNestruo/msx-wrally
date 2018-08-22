@@ -18,12 +18,12 @@
 ; -----------------------------------------------------------------------------
 
 ; Compilación condicional (demos, código de depuración...)
-	DEMO_VERSION		equ 1 ; Versión demo: limita la partida a un único rally
-	; TIME_OVER_GAME_OVER	equ 1 ; Time Over implica Game Over sin posibilidad de Continue
+	; DEMO_VERSION		equ 1 ; Versión demo: limita la partida a un único rally
+	TIME_OVER_GAME_OVER	equ 1 ; Time Over implica Game Over sin posibilidad de Continue
 
 	; DEBUG_BDRCLR		equ 1 ; Color de borde indicando operaciones
 	; DEBUG_QUICKPLAY	equ 1 ; Salta al ingame lo más rápido posible
-	DEBUG_WIPSTAGE	equ 1 ; Utiliza el mapa W.I.P. como 1-1
+	; DEBUG_WIPSTAGE	equ 1 ; Utiliza el mapa W.I.P. como 1-1
 	; DEBUG_CHEATS		equ 1 ; Otros fragmentos de código específicos
 	; DEBUG_RALLYOVERDEMO	equ 1 ; Salta al fin de un rally
 	; DEBUG_GAMEOVERDEMO	equ 1 ; Salta al game over
